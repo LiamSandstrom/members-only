@@ -7,7 +7,6 @@ import connectPgSimple from "connect-pg-simple";
 import passport from "passport";
 import { db } from "./db/db.js";
 import "./configs/passport-config.js"
-import { User } from "./models/user.js";
 
 const pgSession = connectPgSimple(session);
 
@@ -51,7 +50,7 @@ app.use((req, res, next) => {
 
 //----- ROUTING -----
 
-app.get("/", indexRouter);
+app.use("/", indexRouter);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

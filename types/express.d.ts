@@ -1,4 +1,4 @@
-import { UserDto } from "../src/models/user.ts";
+import { UserDto } from "../src/models/userDto.ts";
 
 declare global {
     namespace Express {
