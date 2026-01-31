@@ -1,0 +1,9 @@
+<% if(locals.errors) { %>
+    <div class="error-wrapper">
+        <% for(const error of errors) { %>
+            <p>
+                <%= error.msg %>
+            </p>
+            <% } %>
+    </div>
+    <% } %>

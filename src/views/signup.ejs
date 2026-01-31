@@ -6,48 +6,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign-up</title>
 </head>
-<%- include('partials/navbar')%>
 
-    <body>
-        <% if(locals.errors) { %>
-            <div class="error-wrapper">
-                <% for(const error of errors) { %>
-                    <p>
-                        <%= error.msg %>
-                    </p>
-                    <% } %>
-            </div>
+<body>
+    <%- include('partials/navbar')%>
+        <%- include("partials/errors") %>
 
-            <% } %>
+            <form action="/sign-up" method="POST">
+                <div class="input-wrapper">
+                    <label for="firstname">First Name</label>
+                    <input type="text" id="firstname" name="firstname" value=<%=locals.firstname%>>
+                </div>
 
-                <form action="/sign-up" method="POST">
-                    <div class="input-wrapper">
-                        <label for="firstname">First Name</label>
-                        <input type="text" id="firstname" name="firstname" value=<%=locals.firstname%>>
-                    </div>
+                <div class="input-wrapper">
+                    <label for="lastname">Last Name</label>
+                    <input type="text" id="lastname" name="lastname" value=<%=locals.lastname%>>
+                </div>
 
-                    <div class="input-wrapper">
-                        <label for="lastname">Last Name</label>
-                        <input type="text" id="lastname" name="lastname" value=<%=locals.lastname%>>
-                    </div>
+                <div class="input-wrapper">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" value=<%=locals.username%>>
+                </div>
 
-                    <div class="input-wrapper">
-                        <label for="username">Username</label>
-                        <input type="text" id="username" name="username" value=<%=locals.username%>>
-                    </div>
+                <div class="input-wrapper">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password">
+                </div>
 
-                    <div class="input-wrapper">
-                        <label for="password">Password</label>
-                        <input type="password" id="password" name="password">
-                    </div>
+                <div class="input-wrapper">
+                    <label for="confirmpassword">Confirm Password</label>
+                    <input type="password" id="confirmpassword" name="confirmpassword">
+                </div>
 
-                    <div class="input-wrapper">
-                        <label for="confirmpassword">Confirm Password</label>
-                        <input type="password" id="confirmpassword" name="confirmpassword">
-                    </div>
-
-                    <button type="submit">Sign Up</button>
-                </form>
-    </body>
+                <button type="submit">Sign Up</button>
+            </form>
+</body>
 
 </html>

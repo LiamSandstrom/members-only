@@ -3,7 +3,7 @@ import { CreateUserInput } from "../models/createUserInput.js"
 import { validateSignupForm } from "../service/validation.js"
 import { matchedData, validationResult } from "express-validator"
 import { createUser } from "../db/queries.js"
-import passport from "passport"
+import passport, { AuthenticateCallback } from "passport"
 
 const listAll = (req: Request, res: Response) => {
     res.render("index")
@@ -14,7 +14,7 @@ const create = (req: Request, res: Response) => {
 }
 
 const createView = (req: Request, res: Response) => {
-
+    res.render("createMessage");
 }
 
 const signup = [...validateSignupForm, async (req: Request, res: Response, next: NextFunction) => {
@@ -63,10 +63,25 @@ const signupView = (req: Request, res: Response) => {
     res.render("signup")
 }
 
-const login = passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/"
-})
+const login = (req: Request, res: Response, next: NextFunction) => {
+    const callback: AuthenticateCallback = (err, user, info: any) => {
+        if (err) return next(err);
+
+        if (!user) {
+            return res.render("login", {
+                username: req.body.username,
+                errors: [{ msg: info?.message || "Invalid login" }]
+            });
+        }
+
+        req.login(user, (err) => {
+            if (err) return next(err);
+            return res.redirect("/");
+        });
+    };
+
+    passport.authenticate("local", callback)(req, res, next);
+};
 
 const loginView = (req: Request, res: Response) => {
     res.render("login")

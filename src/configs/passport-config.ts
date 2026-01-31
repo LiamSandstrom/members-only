@@ -8,9 +8,14 @@ import { dbToUserDto } from "../service/mapper.js";
 const verifyCallback: VerifyFunction = async (username, password, done) => {
     try {
         const dbUser = await getUserFromUsername(username);
+
+        if (!dbUser) {
+            return done(null, false, { message: "Invalid login" });
+        }
+
         const isValid = await validatePassword(password, dbUser.password)
 
-        if (!dbUser || !isValid) {
+        if (!isValid) {
             return done(null, false, { message: "Invalid login" });
         }
 

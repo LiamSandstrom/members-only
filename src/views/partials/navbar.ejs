@@ -3,6 +3,7 @@
     <% if (user) { %>
         <form action="/log-out" method="POST">
             <button type="submit">Logout</button>
+            <a href="/new">Create Message</a>
         </form>
         <% } else { %>
             <a href="/log-in">Login</a>
