@@ -17,15 +17,18 @@
     <div class="messages-wrapper">
         <% for(const message of messages) { %>
             <div class="message">
-                <p class="message-header"><%=message.title%></p>
+                <div class="message-header">
+                    <p class="message-user">
+                        @<% if(user.member){ %>
+                        <%=message.user.username%>
+                        <%} else {%>
+                        Anonymous
+                        <%}%>
+                    </p>
+                    <p class="message-added"><%= message.created_at.toLocaleDateString() %></p>
+                </div>
+                <p class="message-user"><%=message.title%></p>
                 <p class="message-text"><%=message.text%></p>
-                <p class="message-added"><%= message.created_at.toLocaleDateString() %></p>
-                <p class="message-user">
-                <% if(user.member){ %>
-                <%=message.user.username%>
-                <%} else {%>
-                Anonymous
-                <%}%>
                 <% if(user.admin){ %>
                 <form action="/delete-message" method="POST">
                     <input type="hidden" name="messageId" value="<%= message.id %>">
@@ -33,7 +36,6 @@
                 </form>
 
                 <%}%>
-                </p>
             </div>
         <% } %>
     </div>
