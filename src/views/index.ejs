@@ -22,7 +22,7 @@
                 <p class="message-added"><%= message.created_at.toLocaleDateString() %></p>
                 <p class="message-user">
                 <% if(user.member){ %>
-                <%=user.firstname%>
+                <%=message.user.username%>
                 <%} else {%>
                 Anonymous
                 <%}%>
