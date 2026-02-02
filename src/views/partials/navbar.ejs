@@ -1,13 +1,16 @@
-<nav>
-    <a href="/">Home</a>
+<nav class="navbar">
+     <a href="/" class="brand">Members Only</a>
+    <div class="links">
     <% if (user) { %>
+        <a href="/">Home</a>
+        <a href="/new">Create Message</a>
+        <a href="/become-member">Manage Account</a>
         <form action="/log-out" method="POST">
             <button type="submit">Logout</button>
-            <a href="/new">Create Message</a>
-            <a href="/become-member">Manage member status</a>
         </form>
         <% } else { %>
             <a href="/log-in">Login</a>
             <a href="/sign-up">Sign Up</a>
             <% } %>
+    </div>
 </nav>

@@ -4,7 +4,7 @@ import { isAuth } from "../middleware/isAuth.js";
 
 const indexRouter = Router()
 
-indexRouter.get("/", listAll)
+indexRouter.get("/", isAuth, listAll)
 
 indexRouter.get("/new", isAuth, createView)
 indexRouter.post("/new", isAuth, create)

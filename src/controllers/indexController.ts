@@ -8,10 +8,6 @@ import { DbMessage } from "../models/dbMessage.js"
 import { CreateMessageInput } from "../models/createMessageInput.js"
 
 const listAll = async (req: Request, res: Response) => {
-    if (!req.user) {
-        res.redirect("/log-in")
-        return;
-    }
     const messages = await getAllMessagesWithUsers();
     res.render("index", { messages: messages })
 }
