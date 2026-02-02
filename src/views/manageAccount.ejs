@@ -16,10 +16,15 @@
     <%- include("partials/navbar")%>
         <%- include("partials/errors") %>
 
-            <form action="/become-member" method="POST">
+            <form action="/manage-account" method="POST">
                 <div class="input-wrapper">
                     <label for="member">Member</label>
                     <input type="checkbox" id="member" name="member" <% if (locals.user.member) { %>checked<% } %> >
+                </div>
+
+                <div class="input-wrapper">
+                    <label for="admin">Admin</label>
+                    <input type="checkbox" id="admin" name="admin" <% if (locals.user.admin) { %>checked<% } %> >
                 </div>
 
                 <button type="submit">Update</button>

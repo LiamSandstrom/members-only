@@ -47,6 +47,7 @@ const getAllMessages = async (): Promise<DbMessage[]> => {
 const getAllMessagesWithUsers = async (): Promise<MessageDto[]> => {
     const result = await db.query(`
         SELECT 
+            m.id,
             m.title,
             m.text,
             m.created_at,
@@ -62,6 +63,7 @@ const getAllMessagesWithUsers = async (): Promise<MessageDto[]> => {
     `);
 
     return result.rows.map(row => ({
+        id: row.id,
         title: row.title,
         text: row.text,
         created_at: row.created_at,
@@ -81,8 +83,12 @@ const getMessageFromId = async (id: number) => {
     return rows[0];
 }
 
-const updateUserMemberStatus = async (id: number, isMember: boolean) => {
-    await db.query("UPDATE users SET member = $1 WHERE id = $2", [isMember, id]);
+const updateUserAccount = async (id: number, isMember: boolean, isAdmin: boolean) => {
+    await db.query("UPDATE users SET member = $1, admin = $2 WHERE id = $3", [isMember, isAdmin, id]);
 }
 
-export { getAllUsers, getUserFromId, getUserFromUsername, createUser, createMessage, getAllMessages, getAllMessagesWithUsers, getMessageFromId, updateUserMemberStatus }
+const deleteMessageWithId = async (id: number) => {
+    await db.query("DELETE from messages WHERE id = $1", [id])
+}
+
+export { getAllUsers, getUserFromId, getUserFromUsername, createUser, createMessage, getAllMessages, getAllMessagesWithUsers, getMessageFromId, updateUserAccount, deleteMessageWithId }

@@ -1,6 +1,7 @@
 import { Router } from "express";
-import { becomeMember, becomeMemberView, create, createView, listAll, login, loginView, logout, signup, signupView } from "../controllers/indexController.js";
+import { create, createView, deleteMessage, listAll, login, loginView, logout, manageAccount, manageAccountView, signup, signupView } from "../controllers/indexController.js";
 import { isAuth } from "../middleware/isAuth.js";
+import { isAdmin } from "../middleware/isAdmin.js";
 
 const indexRouter = Router()
 
@@ -17,8 +18,11 @@ indexRouter.post("/log-out", logout)
 indexRouter.get("/sign-up", signupView)
 indexRouter.post("/sign-up", signup)
 
-indexRouter.get("/become-member", isAuth, becomeMemberView)
-indexRouter.post("/become-member", isAuth, becomeMember)
+indexRouter.get("/manage-account", isAuth, manageAccountView)
+indexRouter.post("/manage-account", isAuth, manageAccount)
+
+indexRouter.post("/delete-message", isAuth, isAdmin, deleteMessage)
+indexRouter.post("/delete-message", isAuth, isAdmin, deleteMessage)
 
 export { indexRouter }
 

@@ -26,6 +26,13 @@
                 <%} else {%>
                 Anonymous
                 <%}%>
+                <% if(user.admin){ %>
+                <form action="/delete-message" method="POST">
+                    <input type="hidden" name="messageId" value="<%= message.id %>">
+                    <button class="message-delete" type="submit">Delete</button>
+                </form>
+
+                <%}%>
                 </p>
             </div>
         <% } %>

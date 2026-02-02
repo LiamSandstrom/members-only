@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express"
 import { CreateUserInput } from "../models/createUserInput.js"
 import { validateMessageForm, validateSignupForm } from "../service/validation.js"
 import { matchedData, validationResult } from "express-validator"
-import { createMessage, createUser, getAllMessages, getAllMessagesWithUsers, updateUserMemberStatus } from "../db/queries.js"
+import { createMessage, createUser, deleteMessageWithId, getAllMessagesWithUsers, updateUserAccount } from "../db/queries.js"
 import passport, { AuthenticateCallback } from "passport"
 import { DbMessage } from "../models/dbMessage.js"
 import { CreateMessageInput } from "../models/createMessageInput.js"
@@ -134,24 +134,37 @@ const logout = (req: Request, res: Response, next: NextFunction) => {
     });
 }
 
-const becomeMemberView = (req: Request, res: Response) => {
-    res.render("becomeMember")
+const manageAccountView = (req: Request, res: Response) => {
+    res.render("manageAccount")
 }
 
-const becomeMember = async (req: Request, res: Response) => {
+const manageAccount = async (req: Request, res: Response) => {
     const id = req.user!.id;
     const isMember = req.body.member !== undefined;
+    const isAdmin = req.body.admin !== undefined;
 
     try {
-        await updateUserMemberStatus(id, isMember);
-        res.redirect("become-member")
+        await updateUserAccount(id, isMember, isAdmin);
+        res.redirect("/manage-account")
         return;
     }
     catch (err) {
-        return res.status(500).render("becomeMember", {
+        return res.status(500).render("manageAccount", {
             errors: [{ msg: "Server error updating member status" }],
         });
     }
 }
 
-export { listAll, create, createView, signup, signupView, login, loginView, logout, becomeMemberView, becomeMember }
+const deleteMessage = async (req: Request, res: Response) => {
+    const messageId = req.body.messageId;
+
+    try {
+        await deleteMessageWithId(messageId)
+        res.redirect("/")
+    }
+    catch (err) {
+        return res.status(500).send("Server error deleting message")
+    }
+}
+
+export { listAll, create, createView, signup, signupView, login, loginView, logout, manageAccountView, manageAccount, deleteMessage }
