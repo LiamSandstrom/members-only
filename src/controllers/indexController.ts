@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express"
 import { CreateUserInput } from "../models/createUserInput.js"
 import { validateMessageForm, validateSignupForm } from "../service/validation.js"
 import { matchedData, validationResult } from "express-validator"
-import { createMessage, createUser, getAllMessages, getAllMessagesWithUsers } from "../db/queries.js"
+import { createMessage, createUser, getAllMessages, getAllMessagesWithUsers, updateUserMemberStatus } from "../db/queries.js"
 import passport, { AuthenticateCallback } from "passport"
 import { DbMessage } from "../models/dbMessage.js"
 import { CreateMessageInput } from "../models/createMessageInput.js"
@@ -13,16 +13,16 @@ const listAll = async (req: Request, res: Response) => {
         return;
     }
     const messages = await getAllMessagesWithUsers();
-    console.log(messages)
     res.render("index", { messages: messages })
 }
 
 const create = [...validateMessageForm, async (req: Request, res: Response) => {
     if (!req.user) {
-        console.log("som1 PASSED validateMessageForm")
+        console.log("som1 passed isAuth!!! gg...")
         res.send("u bad")
         return;
     }
+
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).render("createMessage", {
@@ -138,5 +138,24 @@ const logout = (req: Request, res: Response, next: NextFunction) => {
     });
 }
 
+const becomeMemberView = (req: Request, res: Response) => {
+    res.render("becomeMember")
+}
 
-export { listAll, create, createView, signup, signupView, login, loginView, logout }
+const becomeMember = async (req: Request, res: Response) => {
+    const id = req.user!.id;
+    const isMember = req.body.member !== undefined;
+
+    try {
+        await updateUserMemberStatus(id, isMember);
+        res.redirect("become-member")
+        return;
+    }
+    catch (err) {
+        return res.status(500).render("becomeMember", {
+            errors: [{ msg: "Server error updating member status" }],
+        });
+    }
+}
+
+export { listAll, create, createView, signup, signupView, login, loginView, logout, becomeMemberView, becomeMember }

@@ -1,0 +1,25 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Become a Member</title>
+</head>
+
+<body>
+    <%- include("partials/navbar")%>
+        <%- include("partials/errors") %>
+
+            <form action="/become-member" method="POST">
+                <div class="input-wrapper">
+                    <label for="member">Member</label>
+                    <input type="checkbox" id="member" name="member" <% if (locals.user.member) { %>checked<% } %> >
+                </div>
+
+                <button type="submit">Update</button>
+            </form>
+</body>
+
+</html>

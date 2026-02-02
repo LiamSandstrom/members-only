@@ -9,6 +9,7 @@ import { MessageDto } from "../models/messageDto.js";
 
 
 const getAllUsers = async (): Promise<DbUser[]> => {
+
     const { rows } = await db.query("SELECT * FROM users");
     return rows;
 }
@@ -80,4 +81,8 @@ const getMessageFromId = async (id: number) => {
     return rows[0];
 }
 
-export { getAllUsers, getUserFromId, getUserFromUsername, createUser, createMessage, getAllMessages, getAllMessagesWithUsers, getMessageFromId }
+const updateUserMemberStatus = async (id: number, isMember: boolean) => {
+    await db.query("UPDATE users SET member = $1 WHERE id = $2", [isMember, id]);
+}
+
+export { getAllUsers, getUserFromId, getUserFromUsername, createUser, createMessage, getAllMessages, getAllMessagesWithUsers, getMessageFromId, updateUserMemberStatus }
