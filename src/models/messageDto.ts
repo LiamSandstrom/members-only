@@ -1,6 +1,6 @@
 import { UserDto } from "./userDto.js";
 
-export interface Message {
+export interface MessageDto {
     user: UserDto,
     title: string,
     text: string,

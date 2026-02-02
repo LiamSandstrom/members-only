@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS users (
   lastname VARCHAR ( 255 ) NOT NULL,
   username VARCHAR ( 255 ) UNIQUE NOT NULL,
   password VARCHAR ( 255 ) NOT NULL,
+  member BOOLEAN NOT NULL,
   admin BOOLEAN NOT NULL
 );
 

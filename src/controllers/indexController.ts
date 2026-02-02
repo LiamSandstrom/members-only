@@ -1,17 +1,54 @@
 import { NextFunction, Request, Response } from "express"
 import { CreateUserInput } from "../models/createUserInput.js"
-import { validateSignupForm } from "../service/validation.js"
+import { validateMessageForm, validateSignupForm } from "../service/validation.js"
 import { matchedData, validationResult } from "express-validator"
-import { createUser } from "../db/queries.js"
+import { createMessage, createUser, getAllMessages, getAllMessagesWithUsers } from "../db/queries.js"
 import passport, { AuthenticateCallback } from "passport"
+import { DbMessage } from "../models/dbMessage.js"
+import { CreateMessageInput } from "../models/createMessageInput.js"
 
-const listAll = (req: Request, res: Response) => {
-    res.render("index")
+const listAll = async (req: Request, res: Response) => {
+    const messages = await getAllMessagesWithUsers();
+    console.log(messages)
+    res.render("index", { messages: messages })
 }
 
-const create = (req: Request, res: Response) => {
+const create = [...validateMessageForm, async (req: Request, res: Response) => {
+    if (!req.user) {
+        console.log("som1 PASSED validateMessageForm")
+        res.send("u bad")
+        return;
+    }
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).render("createMessage", {
+            title: req.body.title,
+            text: req.body.text,
+            errors: errors.array(),
+        });
+    }
 
-}
+    const { title, text } = matchedData(req)
+
+    const newMessage: CreateMessageInput = {
+        user_id: req.user.id,
+        title,
+        text,
+    }
+
+    try {
+        await createMessage(newMessage);
+        return res.redirect("/")
+    }
+    catch (err) {
+        console.error("Error creating message", err);
+        return res.status(500).render("createMessage", {
+            title: req.body.title,
+            text: req.body.text,
+            errors: [{ msg: "Server error posting message" }],
+        });
+    }
+}]
 
 const createView = (req: Request, res: Response) => {
     res.render("createMessage");
@@ -34,6 +71,7 @@ const signup = [...validateSignupForm, async (req: Request, res: Response, next:
         lastname,
         username,
         password,
+        member: false,
         admin: false
     }
 
@@ -48,7 +86,7 @@ const signup = [...validateSignupForm, async (req: Request, res: Response, next:
         })
     }
     catch (err) {
-        console.error('Signup error:', err);
+        console.error("Signup error:", err);
         return res.status(500).render("signup", {
             firstname: req.body.firstname,
             lastname: req.body.lastname,

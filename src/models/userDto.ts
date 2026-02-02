@@ -3,5 +3,6 @@ export interface UserDto {
     firstname: string,
     lastname: string,
     username: string,
+    member: boolean,
     admin: boolean,
 }

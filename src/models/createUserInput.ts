@@ -4,5 +4,6 @@ export interface CreateUserInput {
     lastname: string;
     username: string;
     password: string;
+    member: boolean;
     admin: boolean;
 }

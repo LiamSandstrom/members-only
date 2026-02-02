@@ -1,9 +1,23 @@
 <%- include('partials/navbar')%>
 
     <% if (locals.user) { %>
-        <h1>Welcome <%= user.firstname %>
-                <%= user.lastname %>
-        </h1>
+
+        <% for(const message of messages) { %>
+        <div class="message">
+            <p><%=message.title%></p>
+            <p><%=message.text%></p>
+            <p><%=message.created_at%></p>
+            <p>
+            <% if(user.member){ %>
+            <%=user.firstname%>
+            <%} else {%>
+            Anonymous
+            <%}%>
+            </p>
+        </div>
+        <% } %>
         <% } else { %>
-            <h1>Welcome, Guest!</h1>
+
+        <p>not logged in</p>
+
             <% } %>

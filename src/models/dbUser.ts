@@ -4,5 +4,6 @@ export interface DbUser {
     lastname: string,
     username: string,
     password: string,
+    member: boolean,
     admin: boolean,
 }

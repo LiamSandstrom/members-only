@@ -1,1 +1,30 @@
-Create message
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Message</title>
+</head>
+
+<body>
+    <%- include("partials/navbar")%>
+        <%- include("partials/errors") %>
+
+            <form action="/new" method="POST">
+                <div class="input-wrapper">
+                    <label for="title">Title</label>
+                    <input type="text" id="title" name="title" value="<%= locals.title%>">
+                </div>
+
+                <div class="input-wrapper">
+                    <label for="text">Text</label>
+                    <!-- prettier-ignore -->
+                    <textarea id="text" name="text"><%= locals.text%></textarea>
+                </div>
+
+                <button type="submit">Post</button>
+            </form>
+</body>
+
+</html>

@@ -35,4 +35,15 @@ const validateSignupForm = [
         })
 ];
 
-export { validateSignupForm }
+
+const validateMessageForm = [
+    body("title").trim()
+        .notEmpty().withMessage("Title is required")
+        .isLength({ min: 1, max: 30 }).withMessage(getLengthErr("Title", 1, 30)),
+    body("text").trim()
+        .notEmpty().withMessage("Text is required")
+        .isLength({ min: 1, max: 150 }).withMessage(getLengthErr("text", 1, 150)),
+]
+
+
+export { validateSignupForm, validateMessageForm }
